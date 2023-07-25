@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Management\CategoryController;
 use App\Http\Controllers\Management\ItemController;
+use App\Http\Controllers\Management\TableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,5 @@ Route::get('/management', [CategoryController::class, 'index']);
 Route::resource('management/categories', CategoryController::class);
 
 Route::resource('management/items', ItemController::class);
+
+Route::resource('management/tables', TableController::class);
