@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Management\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +21,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/management', function () {
-    return view('management.index');
-});
+Route::get('/management', [CategoryController::class, 'index']);
+
+Route::resource('management/categories', CategoryController::class);
