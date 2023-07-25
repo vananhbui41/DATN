@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Management\CategoryController;
+use App\Http\Controllers\Management\ItemController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +26,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/management', [CategoryController::class, 'index']);
 
 Route::resource('management/categories', CategoryController::class);
+
+Route::resource('management/items', ItemController::class);
