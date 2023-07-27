@@ -40,3 +40,4 @@ Route::get('cashier/getItemByCategory/{category_id}', [CashierController::class,
 Route::post('cashier/orderFood', [CashierController::class, 'orderFood']);
 Route::post('cashier/confirmOrderStatus', [CashierController::class, 'confirmOrderStatus']);
 Route::post('cashier/deleteSaleDetail', [CashierController::class, 'deleteSaleDetail']);
+Route::post('cashier/savePayment', [CashierController::class, 'savePayment']);

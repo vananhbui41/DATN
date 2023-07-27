@@ -119,11 +119,11 @@ class CashierController extends Controller
         <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Item</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Price</th>
-                <th scope="col">Total</th>
-                <th scope="col">Status</th>
+                <th scope="col">Món</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Đơn Giá</th>
+                <th scope="col"Tổng</th>
+                <th scope="col">Trạng Thái</th>
             </tr>
         </thead>
         <tbody>';
@@ -152,7 +152,8 @@ class CashierController extends Controller
         $html .= '<h3>Tổng: '.number_format($sale->total_price).' VNĐ</h3>';
 
         if($showBtnPayment){
-            $html .= '<button data-id="'.$sale_id.'" data-totalAmount="'.$sale->total_price.'" class="btn btn-success btn-block btn-payment" data-toggle="modal" data-target="#exampleModal">Thanh toán</button>';
+            $html .= '<button data-id="'.$sale_id.'" data-totalAmount="'.$sale->total_price.'" class="btn btn-success btn-payment" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: -webkit-fill-available">Thanh Toán</button>';
+
         }else{
             $html .= '<button data-id="'.$sale_id.'" class="btn btn-warning btn-confirm-order" style="width: -webkit-fill-available">
                 Xác Nhận Order
@@ -189,5 +190,23 @@ class CashierController extends Controller
             $html = "Không tồn tại Order";
         }
         return $html;
+    }
+
+    public function savePayment(Request $request){
+        $saleID = $request->saleID;
+        $recievedAmount = $request->recievedAmount;
+        $paymentType = $request->paymentType;
+        // update sale information in the sales table by using sale model
+        $sale = Sale::find($saleID);
+        $sale->total_recieved = $recievedAmount;
+        $sale->change = $recievedAmount - $sale->total_price;
+        $sale->payment_type = $paymentType;
+        $sale->sale_status = "paid";
+        $sale->save();
+        //update table to be available
+        $table = Table::find($sale->table_id);
+        $table->status = "available";
+        $table->save();
+        return "/cashier";
     }
 }
