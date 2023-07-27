@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Management\CategoryController;
 use App\Http\Controllers\Management\ItemController;
 use App\Http\Controllers\Management\TableController;
+use App\Http\Controllers\Cashier\CashierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +32,7 @@ Route::resource('management/categories', CategoryController::class);
 Route::resource('management/items', ItemController::class);
 
 Route::resource('management/tables', TableController::class);
+
+Route::get('cashier', [CashierController::class, 'index']);
+
+Route::get('cashier/getTable', [CashierController::class, 'getTables']);
