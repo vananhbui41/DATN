@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Cashier;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Table;
+use App\Models\Category;
 
 class CashierController extends Controller
 {
     public function index() {
-        return view('cashier.index');
+        $categories = Category::all();
+        return view('cashier.index')->with('categories', $categories);
     }
 
     public function getTables() {
