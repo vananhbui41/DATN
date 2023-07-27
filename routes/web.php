@@ -36,3 +36,5 @@ Route::resource('management/tables', TableController::class);
 Route::get('cashier', [CashierController::class, 'index']);
 
 Route::get('cashier/getTable', [CashierController::class, 'getTables']);
+
+Route::get('cashier/getItemByCategory/{id}', [CashierController::class, 'getItemByCategory']);

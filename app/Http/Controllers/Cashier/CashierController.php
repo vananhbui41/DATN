@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Table;
 use App\Models\Category;
+use App\Models\Item;
 
 class CashierController extends Controller
 {
@@ -31,6 +32,26 @@ class CashierController extends Controller
             }
             $html .='</button>';
             $html .= '</div>';
+        }
+        return $html;
+    }
+
+    public function getItemByCategory($id) {
+        $items = Item::where('id', $id)->get();
+        $html = '';
+        foreach($items as $item){
+            $html .= '
+            <div class="col-md-3 text-center">
+                <a class="btn btn-outline-secondary btn-item" data-id="'.$item->id.'">
+                    <img class="img-fluid" src="'.url('/item_images/'.$item->image).'">
+                    <br>
+                    '.$item->name.'
+                    <br>
+                    $'.number_format($item->price).'
+                </a>
+            </div>
+            
+            ';
         }
         return $html;
     }

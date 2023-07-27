@@ -17,6 +17,7 @@
                 @endforeach
               </div>
             </nav>
+
             <div id="list-menu" class="row mt-2"></div>
         </div>
     </div>
@@ -39,6 +40,15 @@
                 $("#btn-show-tables").html('Danh Sách Bàn').removeClass('btn-danger').addClass('btn-primary');
             }
         });
+
+        // Get item by category
+        $(".nav-link").click(function(){
+            $.get("/cashier/getItemByCategory/"+$(this).data("id"),function(data){
+            $("#list-menu").hide();
+            $("#list-menu").html(data);
+            $("#list-menu").fadeIn('fast');
+            });
+        })
     });
 </script>
 @endsection
