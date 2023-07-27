@@ -34,10 +34,9 @@ Route::resource('management/items', ItemController::class);
 Route::resource('management/tables', TableController::class);
 
 Route::get('cashier', [CashierController::class, 'index']);
-
 Route::get('cashier/getTable', [CashierController::class, 'getTables']);
 Route::get('cashier/getSaleDetailsByTable/{table_id}', [CashierController::class, 'getSaleDetailsByTable']);
-
 Route::get('cashier/getItemByCategory/{category_id}', [CashierController::class, 'getItemByCategory']);
-
 Route::post('cashier/orderFood', [CashierController::class, 'orderFood']);
+Route::post('cashier/confirmOrderStatus', [CashierController::class, 'confirmOrderStatus']);
+Route::post('cashier/deleteSaleDetail', [CashierController::class, 'deleteSaleDetail']);

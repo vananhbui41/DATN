@@ -85,6 +85,37 @@
             }
         });
 
+        $("#order-detail").on('click', ".btn-confirm-order", function(){
+            var SaleID = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                data: {
+                    "_token" : $('meta[name="csrf-token"]').attr('content'),
+                    "sale_id" : SaleID
+                },
+                url: "/cashier/confirmOrderStatus",
+                success: function(data){
+                    $("#order-detail").html(data);
+                }
+            });
+        });
+
+        // delete saledetail
+        $("#order-detail").on("click", ".btn-delete-saledetail",function(){
+            var saleDetailID = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                data: {
+                    "_token" : $('meta[name="csrf-token"]').attr('content'),
+                    "saleDetail_id": saleDetailID
+                },
+                url: "/cashier/deleteSaleDetail",
+                success: function(data){
+                    $("#order-detail").html(data);
+                }
+            })
+
+        });
     });
 </script>
 @endsection
