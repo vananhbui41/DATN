@@ -51,7 +51,7 @@ class ItemController extends Controller
         //if a user upload image
         if($request->image){
             $request->validate([
-                'image' => 'nullable|file|image|mimes:jpeg,png,jpg|max:5000'
+                'image' => 'nullable|file|image|mimes:jpeg,png,jpg,heic|max:5000'
             ]);
             $imageName = date('mdYHis').uniqid().'.'.$request->image->extension();
             $request->image->move(public_path('item_images'), $imageName);
@@ -111,7 +111,7 @@ class ItemController extends Controller
         // validate if a user upload image
         if($request->image){
             $request->validate([
-                'image' => 'nullable|file|image|mimes:jpeg,png,jpg|max:5000'
+                'image' => 'nullable|file|image|mimes:jpeg,png,jpg,heic|max:5000'
             ]);
             if($item->image != "noimage.png"){
                 $imageName = $item->image;

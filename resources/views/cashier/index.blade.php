@@ -6,6 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-5">
             <button class="btn btn-primary btn-block" id="btn-show-tables">Danh Sách Bàn</button>
+            <div id="selected-table"></div>
         </div>
         <div class="col-md-7">
             <nav>
@@ -49,6 +50,13 @@
             $("#list-menu").fadeIn('fast');
             });
         })
+
+        // detect button table onclick to show table data
+        $("#table-detail").on("click", ".btn-table", function(){
+            var SELECTED_TABLE_ID = $(this).data("id");
+            var SELECTED_TABLE_NAME = $(this).data("name");
+            $("#selected-table").html('<br><h3>Bàn: '+SELECTED_TABLE_NAME+'</h3><hr>');
+        });
     });
 </script>
 @endsection
