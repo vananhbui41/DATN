@@ -5,7 +5,7 @@ use App\Http\Controllers\Management\CategoryController;
 use App\Http\Controllers\Management\ItemController;
 use App\Http\Controllers\Management\TableController;
 use App\Http\Controllers\Cashier\CashierController;
-
+use App\Http\Controllers\Report\ReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,3 +42,5 @@ Route::post('cashier/confirmOrderStatus', [CashierController::class, 'confirmOrd
 Route::post('cashier/deleteSaleDetail', [CashierController::class, 'deleteSaleDetail']);
 Route::post('cashier/savePayment', [CashierController::class, 'savePayment']);
 Route::get('cashier/showReceipt/{saleID}', [CashierController::class, 'showReceipt']);
+
+Route::get('report', [ReportController::class, 'index']);
