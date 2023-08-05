@@ -64,11 +64,11 @@
                   @foreach($sale->saleDetails as $saleDetail)
                     <tr>
                       <td></td>
-                      <td>{{$saleDetail->menu_id}}</td>
-                      <td>{{$saleDetail->menu_name}}</td>
+                      <td>{{$saleDetail->item_id}}</td>
+                      <td>{{$saleDetail->item_name}}</td>
                       <td>{{$saleDetail->quantity}}</td>
-                      <td>{{$saleDetail->menu_price}}</td>
-                      <td>{{$saleDetail->menu_price * $saleDetail->quantity}}</td>
+                      <td>{{$saleDetail->item_price}}</td>
+                      <td>{{$saleDetail->item_price * $saleDetail->quantity}}</td>
                     </tr>
                   @endforeach
                 @endforeach
@@ -80,6 +80,7 @@
             <form action="/report/show/export" method="get">
               <input type="hidden" name="dateStart" value="{{$dateStart}}" >
               <input type="hidden" name="dateEnd" value="{{$dateEnd}}" >
+              <input type="submit" name="btn btn-warning" value="Xuất báo cáo thành file Exel">
             </form>
 
           @else

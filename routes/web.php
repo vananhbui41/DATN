@@ -44,3 +44,6 @@ Route::post('cashier/savePayment', [CashierController::class, 'savePayment']);
 Route::get('cashier/showReceipt/{saleID}', [CashierController::class, 'showReceipt']);
 
 Route::get('report', [ReportController::class, 'index']);
+Route::get('report/show', [ReportController::class, 'show']);
+
+Route::get('report/show/export', [ReportController::class, 'export']);
