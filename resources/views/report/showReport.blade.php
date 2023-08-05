@@ -75,7 +75,7 @@
               </tbody>
             </table>
    
-            {{$sales->appends($_GET)->links()}}
+            {{-- {{$sales->appends($_GET)->links()}} --}}
 
             <form action="/report/show/export" method="get">
               <input type="hidden" name="dateStart" value="{{$dateStart}}" >

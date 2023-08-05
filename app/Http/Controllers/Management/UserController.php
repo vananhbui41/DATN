@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('management.user')->with('users', $users);
+        return view('management.user.index')->with('users', $users);
     }
 
     /**
@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('management.createUser');
+        return view('management.user.create');
     }
 
     /**
@@ -51,7 +51,7 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->save();
         $request->session()->flash('status', $request->name. ' is created successfully');
-        return redirect('/management/user');
+        return redirect('/management/users');
     }
 
     /**
@@ -74,7 +74,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('management.editUser')->with('user', $user);
+        return view('management.user.edit')->with('user', $user);
     }
 
     /**
@@ -99,7 +99,7 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->save();
         $request->session()->flash('status', $request->name. ' is updated successfully');
-        return redirect('/management/user');
+        return redirect('/management/users');
     }
 
     /**
@@ -112,6 +112,6 @@ class UserController extends Controller
     {
         User::destroy($id);
         Session()->flash('status', 'The user is deleted successfully');
-        return redirect('/management/user');
+        return redirect('/management/users');
     }
 }
