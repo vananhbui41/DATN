@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
       @include('management.inc.sidebar')
       <div class="col-md-8">
-        <i class="fas fa-hamburger"></i>Món Ăn
-        <a href="/management/items/create" class="btn btn-success btn-sm float-right"><i class="fas fa-plus"></i> Tạo món mới</a>
+        <i class="fas fa-hamburger"></i><span class="form-title"> Món Ăn </span>
+        <a href="/management/items/create" class="btn btn-success btn-sm float-end"><i class="fas fa-plus"></i> Tạo món mới</a>
         <hr>
         @if(Session()->has('status'))
           <div class="alert alert-success">
@@ -15,7 +15,7 @@
         @endif
         <table class="table table-bordered">
           <thead>
-            <tr>
+            <tr class="table-primary">
               <th scope="col">ID</th>
               <th scope="col">Tên</th>
               <th scope="col">Giá</th>
@@ -28,7 +28,7 @@
           </thead>
           <tbody>
             @foreach($items as $item)
-              <tr>
+              <tr class="table-light">
                 <td>{{$item->id}}</td>
                 <td>{{$item->name}}</td>
                 <td>{{$item->price}}</td>
@@ -42,7 +42,7 @@
                   <form action="/management/items/{{$item->id}}" method="post">
                     @csrf 
                     @method('DELETE')
-                    <input type="submit" value="Delete" class="btn btn-danger">
+                    <input type="submit" value="Xóa" class="btn btn-danger">
                   </form>
                 </td>
               </tr>

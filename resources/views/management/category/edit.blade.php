@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         @include('management.inc.sidebar')
       <div class="col-md-8">
-        <i class="fas fa-align-justify"></i>Sửa Phân Loại
+        <i class="fas fa-align-justify"></i><span class="form-title">Chỉnh Sửa Phân Loại</span> 
         <hr>
         @if($errors->any())
           <div class="alert alert-danger">
@@ -19,11 +19,11 @@
         <form action="/management/categories/{{$category->id}}" method="POST">
           @csrf
           @method('PUT')
-          <div class="form-group">
-            <label for="categoryName">Tên</label>
-            <input type="text" name="name" value="{{$category->name}}"  class="form-control" placeholder="Nhập tên ...">
+          <div class="mb-3">
+            <label for="categoryName" class="form-label">Tên</label>
+            <input type="text" name="name" value="{{$category->name}}"  class="form-control" placeholder="Nhập tên ..." required oninvalid="this.setCustomValidity('Điền tên phân loại')">
           </div>
-          <button type="submit" class="btn btn-primary">Lưu</button>
+          <button type="submit" class="btn btn-primary btn-lg">Lưu</button>
         </form>
       </div>
     </div>

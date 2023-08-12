@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
       @include('management.inc.sidebar')
       <div class="col-md-8">
-        <i class="fas fa-hamburger"></i>Edit a Item
+        <i class="fas fa-hamburger"></i><span class="form-title">Chỉnh Sửa Món Ăn</span>
         <hr>
         @if($errors->any())
           <div class="alert alert-danger">
@@ -19,31 +19,31 @@
         <form action="/management/items/{{$item->id}}" method="POST" enctype="multipart/form-data">
           @csrf
           @method('PUT')
-          <div class="form-group">
-            <label for="itemName">Tên món ăn</label>
-            <input type="text" name="name" value="{{$item->name}}" class="form-control" placeholder="Nhập tên ...">
+          <div class="mb-3">
+            <label class="form-label" for="itemName">Tên món ăn</label>
+            <input type="text" name="name" value="{{$item->name}}" class="form-control" placeholder="Nhập tên ..." required oninvalid="this.setCustomValidity('Điền tên món')">
           </div>
-          <label for="itemPrice">Giá tiền</label>
+          <label class="form-label" for="itemPrice">Giá tiền</label>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">VNĐ</span>
             </div>
-            <input type="text" name="price" value="{{$item->price}}" class="form-control" aria-label="">
+            <input type="text" name="price" value="{{$item->price}}" class="form-control" aria-label="" required oninvalid="this.setCustomValidity('Điền giá tiền')">
           </div>
-          <label for="ItemImage">Ảnh Món Ăn</label>
+          <label class="form-label" for="ItemImage">Ảnh Món Ăn</label>
           <div class="input-group mb-3">
             <div class="custom-file">
               <input type="file" name="image" class="custom-file-input" id="inputGroupFile01">          
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="Description">Mô tả</label>
-            <input type="text" name="description" value="{{$item->description}}" class="form-control" placeholder="Mô tả...">
+          <div class="mb-3">
+            <label class="form-label" for="Description">Mô tả</label>
+            <input type="text" name="description" value="{{$item->description}}" class="form-control" placeholder="Mô tả..." required oninvalid="this.setCustomValidity('Điền mô tả')">
           </div>
 
-          <div class="form-group">
-            <label for="Category">Phân Loại</label>
+          <div class="mb-3">
+            <label class="form-label" for="Category">Phân Loại</label>
             <select class="form-control" name="category_id">
               @foreach ($categories as $category)
                 <option value="{{$category->id}}" {{$item->category_id === $category->id ? 'selected': ''}}>{{$category->name}}</option>
@@ -52,7 +52,7 @@
             </select>
           </div>
 
-          <button type="submit" class="btn btn-warning">Lưu</button>
+          <button type="submit" class="btn btn-warning btn-lg">Lưu</button>
         </form>
       </div>
     </div>

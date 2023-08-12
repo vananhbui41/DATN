@@ -103,7 +103,7 @@ class ItemController extends Controller
     {
         // information validation
         $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:items,name,'.$id,
             'price' => 'required|numeric',
             'category_id' => 'required|numeric'
         ]);

@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
       @include('management.inc.sidebar')
       <div class="col-md-8">
-        <h3><i class="fas fa-users"></i> Nhân Viên</h3>
-        <a href="/management/users/create" class="btn btn-success btn-sm float-right"><i class="fas fa-plus"></i> Thêm Nhân Viên</a>
+        <i class="fas fa-users"></i> <span class="form-title">Nhân Viên</span>
+        <a href="/management/users/create" class="btn btn-success btn-sm float-end"><i class="fas fa-plus"></i> Thêm Nhân Viên</a>
         <hr>
         @if(Session()->has('status'))
           <div class="alert alert-success">
@@ -16,7 +16,7 @@
         @endif
         <table class="table table-bordered">
           <thead>
-            <tr>
+            <tr class="table-primary">
               <th scope="col">ID</th>
               <th scope="col">Họ Và Tên</th>
               <th scope="col">Chức vụ</th>

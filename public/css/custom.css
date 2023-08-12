@@ -7,3 +7,26 @@ a:hover {
     text-decoration: none;
     color: #FF0000;
 }
+
+.form-title {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 5px;
+}
+
+a {
+    font-size: 20px;
+}
+
+.form-label {
+    font-size: 18px;
+}
+
+.form-control {
+    background-color: #fcfcfd;
+    font-size: 18px;
+}
+
+span.input-group-text {
+    font-size: 18px;
+}

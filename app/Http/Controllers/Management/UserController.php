@@ -88,17 +88,18 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'required|min:6',
+            'email' => 'required|email|max:255|unique:users,email'.$id,
             'role' => 'required'
         ]);
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        if (isset($user->password)) {  
+            $user->password = Hash::make($request->password);
+        }
         $user->role = $request->role;
         $user->save();
-        $request->session()->flash('status', $request->name. ' is updated successfully');
+        $request->session()->flash('status', $request->name. ' đã được sửa thông tin');
         return redirect('/management/users');
     }
 

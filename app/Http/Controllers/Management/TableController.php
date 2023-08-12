@@ -77,7 +77,9 @@ class TableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate(['name' => 'required|unique:tables|max:255']);
+        $request->validate([
+            'name' => 'required|max:255|unique:tables,name'.$id
+        ]);
         $table = Table::find($id);
         $table->name = $request->name;
         $table->save();
