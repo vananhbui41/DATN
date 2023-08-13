@@ -20,16 +20,16 @@ use App\Http\Controllers\Management\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes(['register' => false, 'reset' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Route::middleware(['auth'])->group(function () {
-    
+    Route::get('/', function () {
+        return view('home');
+    });    
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('cashier', [CashierController::class, 'index']);
     Route::get('cashier/getTable', [CashierController::class, 'getTables']);
     Route::get('cashier/getSaleDetailsByTable/{table_id}', [CashierController::class, 'getSaleDetailsByTable']);

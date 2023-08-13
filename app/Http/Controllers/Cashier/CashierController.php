@@ -49,7 +49,7 @@ class CashierController extends Controller
                     <br>
                     '.$item->name.'
                     <br>
-                    $'.number_format($item->price).'
+                    '.number_format($item->price).'
                 </a>
             </div>
             
@@ -81,14 +81,22 @@ class CashierController extends Controller
             $sale_id = $sale->id;
         }
 
-        // add ordered item to the sale_details table
-        $saleDetail = new SaleDetail();
-        $saleDetail->sale_id = $sale_id;
-        $saleDetail->item_id = $item->id;
-        $saleDetail->item_name = $item->name;
-        $saleDetail->item_price = $item->price;
-        $saleDetail->quantity = $request->quantity;
-        $saleDetail->save();
+        $saleDetail = SaleDetail::where('sale_id', $sale->id)->where('item_id',$item->id)->first();
+
+        if ($saleDetail === null) {
+            // add ordered item to the sale_details table
+            $saleDetail = new SaleDetail();
+            $saleDetail->sale_id = $sale_id;
+            $saleDetail->item_id = $item->id;
+            $saleDetail->item_name = $item->name;
+            $saleDetail->item_price = $item->price;
+            $saleDetail->quantity = $request->quantity;
+            $saleDetail->save();
+        } else {
+            $saleDetail->quantity += $request->quantity;
+            $saleDetail->save();
+        }
+
         //update total price in the sales table
         $sale->total_price = $sale->total_price + ($request->quantity * $item->price);
         $sale->save();
@@ -96,6 +104,7 @@ class CashierController extends Controller
         $html = $this->getSaleDetails($sale_id);
 
         return $html;
+        
     }
 
     public function getSaleDetailsByTable($table_id){
@@ -122,17 +131,18 @@ class CashierController extends Controller
                 <th scope="col">Món</th>
                 <th scope="col">Số lượng</th>
                 <th scope="col">Đơn Giá</th>
-                <th scope="col"Tổng</th>
+                <th scope="col">Tổng</th>
                 <th scope="col">Trạng Thái</th>
             </tr>
         </thead>
         <tbody>';
         $showBtnPayment = true;
+        $saleDetailId = 1;
         foreach($saleDetails as $saleDetail){
           
             $html .= '
             <tr>
-                <td>'.$saleDetail->id.'</td>
+                <td>'.$saleDetailId.'</td>
                 <td>'.$saleDetail->item_name.'</td>
                 <td>'.$saleDetail->quantity.'</td>
                 <td>'.$saleDetail->item_price.'</td>
@@ -144,6 +154,7 @@ class CashierController extends Controller
                     $html .= '<td><i class="fas fa-check-circle"></i></td>';
                 }
             $html .= '</tr>';
+            $saleDetailId++;
         }
         $html .='</tbody></table></div>';
 

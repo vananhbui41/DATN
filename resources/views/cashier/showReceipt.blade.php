@@ -28,14 +28,16 @@
           </tr>
         </thead>
         <tbody>
+          {{$saleDetailId = 1}}
           @foreach($saleDetails as $saleDetail)
             <tr>
-              <td width="30">{{$saleDetail->item_id}}</td>
+              <td width="30">{{$saleDetailId}}</td>
               <td width="180">{{$saleDetail->item_name}}</td>
               <td width="50">{{$saleDetail->quantity}}</td>
               <td width="55">{{$saleDetail->item_price}}</td>
               <td width="65">{{$saleDetail->item_price * $saleDetail->quantity}}</td>
             </tr>
+          {{$saleDetailId++}}
           @endforeach
         </tbody>
       </table>
