@@ -44,13 +44,13 @@ class CashierController extends Controller
         foreach($items as $item){
             $html .= '
             <div class="col-md-3 text-center">
-                <a class="btn btn-outline-secondary btn-item" data-id="'.$item->id.'">
-                    <img class="img-fluid" src="'.url('/item_images/'.$item->image).'">
-                    <br>
-                    '.$item->name.'
-                    <br>
-                    '.number_format($item->price).'
-                </a>
+                <div class="card btn-item" data-id="'.$item->id.'">
+                    <img class="card-img-top" src="'.url('/item_images/'.$item->image).'">
+                    <div class="card-body">
+                        <div class="card-title">'.$item->name.'</div>
+                        <div class="card-text">'.number_format($item->price).'</div> 
+                    </div>
+                </div>
             </div>
             
             ';
@@ -94,17 +94,50 @@ class CashierController extends Controller
             $saleDetail->save();
         } else {
             $saleDetail->quantity += $request->quantity;
+            $saleDetail->status = 'noConfirm';
             $saleDetail->save();
         }
 
         //update total price in the sales table
-        $sale->total_price = $sale->total_price + ($request->quantity * $item->price);
+        $sale->total_price = $sale->total_price + $saleDetail->item_price * $request->quantity;
         $sale->save();
 
         $html = $this->getSaleDetails($sale_id);
 
         return $html;
         
+    }
+
+    public function increaseItemQty (Request $request){
+        $saleDetail_id = $request->saleDetail_id;
+        $saleDetail = SaleDetail::where('id', $saleDetail_id)->first();
+        $saleDetail->quantity = $saleDetail->quantity + 1;
+        $saleDetail->status = 'noConfirm';
+        $saleDetail->save();
+
+        $sale = Sale::where('id', $saleDetail->sale_id)->first();
+        //update total price in the sales table
+        $sale->total_price = $sale->total_price + $saleDetail->item_price;
+        $sale->save();
+
+        $html = $this->getSaleDetails($saleDetail->sale_id);
+        return $html;
+    }
+
+    public function decreaseItemQty (Request $request){
+        $saleDetail_id = $request->saleDetail_id;
+        $saleDetail = SaleDetail::where('id', $saleDetail_id)->first();
+        $saleDetail->quantity = $saleDetail->quantity - 1;
+        $saleDetail->status = 'noConfirm';
+        $saleDetail->save();
+
+        $sale = Sale::where('id', $saleDetail->sale_id)->first();
+        //update total price in the sales table
+        $sale->total_price = $sale->total_price - $saleDetail->item_price;
+        $sale->save();
+
+        $html = $this->getSaleDetails($saleDetail->sale_id);
+        return $html;
     }
 
     public function getSaleDetailsByTable($table_id){
@@ -144,7 +177,12 @@ class CashierController extends Controller
             <tr>
                 <td>'.$saleDetailId.'</td>
                 <td>'.$saleDetail->item_name.'</td>
-                <td>'.$saleDetail->quantity.'</td>
+                <td><button data-id="'.$saleDetail->id.'" class="btn btn-decrease-qty"';
+                if ($saleDetail->quantity < 2) {
+                    $html.= ' disabled';
+                }
+                $html .= '><i class="fa-solid fa-minus" style="color: #ffffff;"></i></button><span id="itemQty">'.$saleDetail->quantity.'</span><button data-id="'.$saleDetail->id.'" class="btn btn-increase-qty"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+                </td>
                 <td>'.$saleDetail->item_price.'</td>
                 <td>'.($saleDetail->item_price * $saleDetail->quantity).'</td>';
                 if($saleDetail->status == "noConfirm"){

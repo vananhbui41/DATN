@@ -81,6 +81,8 @@
 
         // Get item by category
         $(".nav-link").click(function(){
+            $(this).addClass('active');
+            $(".nav-link").not(this).removeClass('active');
             $.get("/cashier/getItemByCategory/"+$(this).data("id"),function(data){
             $("#list-item").hide();
             $("#list-item").html(data);
@@ -147,6 +149,40 @@
                     "saleDetail_id": saleDetailID
                 },
                 url: "/cashier/deleteSaleDetail",
+                success: function(data){
+                    $("#order-detail").html(data);
+                }
+            })
+
+        });
+
+        //increse Item qty
+        $("#order-detail").on("click", ".btn-increase-qty",function(){
+            var saleDetailID = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                data: {
+                    "_token" : $('meta[name="csrf-token"]').attr('content'),
+                    "saleDetail_id": saleDetailID
+                },
+                url: "/cashier/increaseItemQty",
+                success: function(data){
+                    $("#order-detail").html(data);
+                }
+            })
+
+        });
+
+        //decrese Item qty
+        $("#order-detail").on("click", ".btn-decrease-qty",function(){
+            var saleDetailID = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                data: {
+                    "_token" : $('meta[name="csrf-token"]').attr('content'),
+                    "saleDetail_id": saleDetailID
+                },
+                url: "/cashier/decreaseItemQty",
                 success: function(data){
                     $("#order-detail").html(data);
                 }

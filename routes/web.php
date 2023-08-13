@@ -37,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('cashier/orderFood', [CashierController::class, 'orderFood']);
     Route::post('cashier/confirmOrderStatus', [CashierController::class, 'confirmOrderStatus']);
     Route::post('cashier/deleteSaleDetail', [CashierController::class, 'deleteSaleDetail']);
+    Route::post('cashier/increaseItemQty', [CashierController::class, 'increaseItemQty']);
+    Route::post('cashier/decreaseItemQty', [CashierController::class, 'decreaseItemQty']);
     Route::post('cashier/savePayment', [CashierController::class, 'savePayment']);
     Route::get('cashier/showReceipt/{saleID}', [CashierController::class, 'showReceipt']);
 });

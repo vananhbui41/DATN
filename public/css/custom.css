@@ -30,3 +30,22 @@ a {
 span.input-group-text {
     font-size: 18px;
 }
+
+.btn-decrease-qty {
+    border: unset;
+}
+
+.btn-item {
+    background-color: white;
+    border-color: black;
+}
+
+.card-title {
+    font-weight: bold !important;
+}
+
+.btn-item img {
+    padding: 10px 10px 0px 10px;
+    height: 100px;
+    object-fit: cover;
+}
