@@ -50,7 +50,21 @@
           </tr>
           <tr>
             <td colspan="2">Phương Thức Thanh Toán: </td>
-            <td colspan="2">{{$sale->payment_type}}</td>
+            <td colspan="2">
+              @if ($sale->payment_type == 'cash') 
+                Tiền mặt
+              @else
+                Chuyển khoản
+              @endif
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">Số tiền đã trả</td>
+            <td colspan="2">{{number_format($sale->total_recieved)}}</td>
+          </tr>
+          <tr>
+            <td colspan="2">Tiền thừa</td>
+            <td colspan="2">{{number_format($sale->chang)}}</td>
           </tr>
         </tbody>
       </table>

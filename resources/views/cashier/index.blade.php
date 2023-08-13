@@ -39,7 +39,8 @@
         <div class="modal-body">
           <h3 class="totalAmount"></h3>
           <h3 class="changeAmount"></h3>
-          <div class="input-group mb-3">
+          <h3 class="transferQR"></h3>
+          <div class="input-group mb-3 received">
              <div class="input-group-prepend">
               <span class="input-group-text">VNĐ</span>
              </div> 
@@ -55,7 +56,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            <button type="button" class="btn btn-primary btn-save-payment" disable>Tiếp tục</button>
+            <button type="button" class="btn btn-primary btn-save-payment">Tiếp tục</button>
         </div>
       </div>
     </div>
@@ -205,20 +206,23 @@
             var recievedAmount = $(this).val();
             var changeAmount = recievedAmount - totalAmount;
             $(".changeAmount").html("Trả lại khách: " + changeAmount + " VNĐ");
-
-            //check if cashier enter the right amount, then enable or disable save payment button
-
-            if(changeAmount >= 0){
-            $('.btn-save-payment').prop('disabled', false);
-            }else{
-            $('.btn-save-payment').prop('disabled', true);
-            }
-
+        });
+        
+        // show qr transfer
+        $("#payment-type").change(function(){
+            var totalAmount = $(".btn-payment").attr('data-totalAmount');
+            var saleId = SALE_ID;
+            $('.transferQR').html(
+            'QR chuyển khoản: <a target="_blank" href="https://img.vietqr.io/image/cake-0912463044-print.png?amount='+totalAmount+'&addInfo=ID'+saleId+'&accountName=Bui%Van%Anh"><span style = "color: #0d6efd; font-size: larger">Ngân Hàng Cake</span></a>');
         });
 
         // save payment
         $(".btn-save-payment").click(function(){
+            var totalAmount = $(".btn-payment").attr('data-totalAmount');
             var recievedAmount = $("#recieved-amount").val();
+            if (recievedAmount == '') {
+                recievedAmount = totalAmount;
+            }
             var paymentType =$("#payment-type").val();
             var saleId = SALE_ID;
             $.ajax({
