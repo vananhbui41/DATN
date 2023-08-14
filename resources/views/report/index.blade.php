@@ -2,24 +2,29 @@
 
 @section('content')
   <div class="container">
-    <div class="row">
+    <div class="row">      
+      @if($errors->any())
       <div class="col-md-12">
-        @if($errors->any())
-          <div class="alert alert-danger">
-              <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{$error}}</li>
-                @endforeach
-              </ul>
-          </div>
-        @endif
-        <nav aria-label="breadcrumb">
+        <div class="alert alert-danger">
+            <ul>
+              @foreach($errors->all() as $error)
+                  <li>{{$error}}</li>
+              @endforeach
+            </ul>
+        </div>
+      </div>
+      @endif
+      <div class="col-md-12">
+          <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Báo cáo</li>
           </ol>
         </nav>
-      </div>
+      </div>        
+      {{-- <div class="col-md-6 float-end">
+        <a href="/report/chart" class="btn btn-primary btn-lg">Biểu Đồ</a>
+      </div> --}}
     </div>
     <div class="row" id="filter">
       <form action="/report/show" method="GET">

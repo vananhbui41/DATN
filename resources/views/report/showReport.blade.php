@@ -66,9 +66,9 @@
           @if($sales->count() > 0)
             <div class="alert alert-success" role="alert">
               <p>Từ ngày {{$dateStart}} đến {{$dateEnd}} </p>
-              @if(isset($table))
+              {{-- @if(isset($table))
               <p>Bàn: {{$table->name}} </p>
-              @endif
+              @endif --}}
               <p style="font-weight: bold">Tổng doanh thu: {{number_format($totalSale)}} VNĐ</p>
               <p style="font-weight: bold">Tổng số đơn: {{$sales->total()}}</p>
             </div>

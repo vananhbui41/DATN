@@ -59,4 +59,6 @@ Route::middleware(['auth', 'VerifyAdmin'])->group(function () {
     Route::get('report/show/export', [ReportController::class, 'export']);
 
     Route::resource('management/users', UserController::class);
+
+    Route::get('report/chart', [ReportController::class, 'chart']);
 });

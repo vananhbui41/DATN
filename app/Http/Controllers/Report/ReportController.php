@@ -10,6 +10,7 @@ use App\Models\User;
 
 use App\Exports\SaleReportExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Charts\SaleByTime;
 
 class ReportController extends Controller
 {
@@ -55,5 +56,16 @@ class ReportController extends Controller
     }
     public function export(Request $request){
         return Excel::download(new SaleReportExport($request->dateStart, $request->dateEnd), 'saleReport.xlsx');
+    }
+
+    public function chart() {
+
+        $chart = new SaleByTime;
+
+        $chart->labels(['One', 'Two', 'Three', 'Four']);
+        $chart->dataset('My dataset', 'line', [1, 2, 3, 4]);
+        // $chart->dataset('My dataset 2', 'line', [4, 3, 2, 1]);
+
+        return view('report.charts.index', ['chart' => $chart]);
     }
 }
