@@ -14,7 +14,7 @@ a:hover {
     margin: 5px;
 }
 
-a {
+.list-group a {
     font-size: 20px;
 }
 
@@ -48,4 +48,12 @@ span.input-group-text {
     padding: 10px 10px 0px 10px;
     height: 100px;
     object-fit: cover;
+}
+
+.table {
+    font-size: 16px;
+}
+
+#show-report {
+    margin-bottom: 10px;
 }

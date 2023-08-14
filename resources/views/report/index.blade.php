@@ -21,89 +21,100 @@
         </nav>
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="filter">
       <form action="/report/show" method="GET">
-        <div class="col-md-12">
-        <label>Chọn Ngày</label>
-             <div class="col-sm-6">
-          <label for="date-startInput" class="form-label">From</label>
-          <div
-            class="input-group log-event"
-            id="date-start"
-            data-td-target-input="nearest"
-            data-td-target-toggle="nearest"
-          >
-            <input
-              id="date-startInput"
-              type="text"
-              class="form-control"
-              data-td-target="#date-start"
-            />
-            <span
-              class="input-group-text"
-              data-td-target="#date-start"
-              data-td-toggle="datetimepicker"
-            >
-              <span class="fa-solid fa-calendar"></span>
-            </span>
+        <label style="font-size: 20px; font-weight: bold">Danh Sách Order</label>
+        <div class="row">
+          <div class="col mb-3">
+              <label for="date-start" class="form-label">Start</label>
+              <input id="date-start" class="form-control" type="date" name="dateStart"/>
+              <span id="startDateSelected"></span>
+          </div>
+          <div class="col mb-3">
+              <label for="date-end" class="form-label">End</label>
+              <input id="date-end" class="form-control" type="date" name="dateEnd"/>
+              <span id="endDateSelected"></span>
           </div>
         </div>
-        <div class="col-sm-6">
-          <label for="date-endInput" class="form-label">To</label>
-          <div
-            class="input-group log-event"
-            id="date-end"
-            data-td-target-input="nearest"
-            data-td-target-toggle="nearest"
-          >
-            <input
-              id="date-endInput"
-              type="text"
-              class="form-control"
-              data-td-target="#date-end"
-            />
-            <span
-              class="input-group-text"
-              data-td-target="#date-end"
-              data-td-toggle="datetimepicker"
-            >
-              <span class="fa-solid fa-calendar"></span>
-            </span>
+        <div class="row">
+          <div class="col mb-3">
+            <label for="Table" class="form-label">Bàn</label>
+            <select class="form-control" name="table_id">
+              <option value="">Chọn bàn</option>
+              @foreach ($tables as $table)
+                <option value="{{$table->id}}">{{$table->name}}</option>
+              @endforeach
+            </select>           
+          </div>
+          <div class="col mb-3">
+            <label for="User" class="form-label">Nhân viên</label>
+            <select class="form-control" name="user_id">
+              <option value="">Chọn Nhân Viên</option>
+              @foreach ($users as $user)
+                <option value="{{$user->id}}">{{$user->name}}</option>
+              @endforeach
+            </select>           
           </div>
         </div>
-          <input class="btn btn-primary" type="submit" value="Hiển thị báo cáo">
-        
-        </div>
+        <input class="btn btn-primary" type="submit" value="Xem Báo Cáo" id="show-report">
+
       </form>
+    </div>
+
+    <div class="row" id="report-list">
+      <div class="col-md-12">
+        @if($sales->count() > 0)
+          <table class="table">
+            <thead class="table-primary">
+              <tr class="bg-primary text-light">
+                <th scope="col">#</th>
+                <th scope="col">ID</th>
+                <th scope="col">Thời Gian Tạo</th>
+                <th scope="col">Bàn</th>
+                <th scope="col">Nhân Viên</th>
+                <th scope="col">Tổng Tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php 
+                $countSale = ($sales->currentPage() - 1) * $sales->perPage() + 1;
+              @endphp 
+              @foreach($sales as $sale)
+                <tr class="bg-primary text-light">
+                  <td>{{$countSale++}}</td>
+                  <td>{{$sale->id}}</td>
+                  <td>{{date("m/d/Y H:i:s", strtotime($sale->updated_at))}}</td>
+                  <td>{{$sale->table_name}}</td>
+                  <td>{{$sale->user_name}}</td>
+                  <td>{{$sale->total_price}}</td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+ 
+          {{$sales->appends($_GET)->links()}}
+
+        @else
+          <div class="alert alert-danger" role="alert">
+            Không có order nào phù hợp
+          </div>
+        @endif
+      </div>
     </div>
   </div>
 
-  <script type="module">
-      import { TempusDominus, Namespace } from '@eonasdan/tempus-dominus';
-      const linkedPicker1Element = document.getElementById('date-start');
-      const linked1 = new TempusDominus(linkedPicker1Element);
-      const linked2 = new TempusDominus(document.getElementById('date-end'), {
-        useCurrent: false,
-      });
+  <script type="text/javascript">
+      let date-start = document.getElementById('date-start')
+      let date-end = document.getElementById('date-end')
 
-      //using event listeners
-      linkedPicker1Element.addEventListener(Namespace.events.change, (e) => {
-        linked2.updateOptions({
-          restrictions: {
-            minDate: e.detail.date,
-          },
-        });
-      });
+      date-start.addEventListener('change',(e)=>{
+        let startDateVal = e.target.value
+        document.getElementById('startDateSelected').innerText = startDateVal
+      })
 
-      //using subscribe method
-      const subscription = linked2.subscribe(Namespace.events.change, (e) => {
-        linked1.updateOptions({
-          restrictions: {
-            maxDate: e.date,
-          },
-        });
-      });
+      date-end.addEventListener('change',(e)=>{
+        let endDateVal = e.target.value
+        document.getElementById('endDateSelected').innerText = endDateVal
+      })  
   </script>
-
-
 @endsection

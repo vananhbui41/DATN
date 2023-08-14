@@ -14,7 +14,8 @@
       <p>Address: 118 Hai Bà Trưng, Nam Định</p>
       <p>Tel: 0912345678</p>
       <p>Thời gian: {{$sale->created_at}}</p>
-      <p>Reference Receipt: <strong>{{$sale->id}}</strong></p>
+      <p>Mã Đơn: <strong>{{$sale->id}}</strong></p>
+      <p>Nhân Viên: {{$sale->user_name}}</p>
     </div>
     <div id="receipt-body">
       <table class="tb-sale-detail">

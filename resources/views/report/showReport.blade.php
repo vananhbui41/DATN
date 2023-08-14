@@ -15,29 +15,72 @@
         @endif
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/home">Main Functions</a></li>
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item"><a href="/report">Report</a></li>
             <li class="breadcrumb-item active" aria-current="page">Result</li>
           </ol>
         </nav>
       </div>
     </div>
+    <div class="row" id="filter">
+      <form action="/report/show" method="GET">
+        <label style="font-size: 20px; font-weight: bold">Danh Sách Order</label>
+        <div class="row">
+          <div class="col mb-3">
+              <label for="date-start" class="form-label">Start</label>
+              <input id="date-start" class="form-control" type="date" name="dateStart"/>
+              <span id="startDateSelected"></span>
+          </div>
+          <div class="col mb-3">
+              <label for="date-end" class="form-label">End</label>
+              <input id="date-end" class="form-control" type="date" name="dateEnd"/>
+              <span id="endDateSelected"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col mb-3">
+            <label for="Table" class="form-label">Bàn</label>
+            <select class="form-control" name="table_id">
+              <option value="">Chọn bàn</option>
+              @foreach ($tables as $table)
+                <option value="{{$table->id}}">{{$table->name}}</option>
+              @endforeach
+            </select>           
+          </div>
+          <div class="col mb-3">
+            <label for="User" class="form-label">Nhân viên</label>
+            <select class="form-control" name="user_id">
+              <option value="">Chọn Nhân Viên</option>
+              @foreach ($users as $user)
+                <option value="{{$user->id}}">{{$user->name}}</option>
+              @endforeach
+            </select>           
+          </div>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Xem Báo Cáo" id="show-report">
+
+      </form>
+    </div>
     <div class="row">
         <div class="col-md-12">
           @if($sales->count() > 0)
             <div class="alert alert-success" role="alert">
-              <p>The Total Amount of Sale from {{$dateStart}} to {{$dateEnd}} is ${{number_format($totalSale, 2)}}</p>
-              <p>Total Result: {{$sales->total()}}</p>
+              <p>Từ ngày {{$dateStart}} đến {{$dateEnd}} </p>
+              @if(isset($table))
+              <p>Bàn: {{$table->name}} </p>
+              @endif
+              <p style="font-weight: bold">Tổng doanh thu: {{number_format($totalSale)}} VNĐ</p>
+              <p style="font-weight: bold">Tổng số đơn: {{$sales->total()}}</p>
             </div>
             <table class="table">
-              <thead>
+              <thead class="table-primary">
                 <tr class="bg-primary text-light">
                   <th scope="col">#</th>
-                  <th scope="col">Receipt ID</th>
-                  <th scope="col">Date Time</th>
-                  <th scope="col">Table</th>
-                  <th scope="col">Staff</th>
-                  <th scope="col">Total Amount</th>
+                  <th scope="col">ID Đơn</th>
+                  <th scope="col">Thời Gian Tạo</th>
+                  <th scope="col">Bàn</th>
+                  <th scope="col">Nhân Viên</th>
+                  <th scope="col">Tổng Tiền</th>
                 </tr>
               </thead>
               <tbody>
@@ -55,11 +98,11 @@
                   </tr>
                   <tr >
                     <th></th>
-                    <th>Item ID</th>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total Price</th>
+                    <th>ID Món</th>
+                    <th>Món</th>
+                    <th>Số Lượng</th>
+                    <th>Đơn Giá</th>
+                    <th>Thành Tiền</th>
                   </tr>
                   @foreach($sale->saleDetails as $saleDetail)
                     <tr>
@@ -75,7 +118,7 @@
               </tbody>
             </table>
    
-            {{-- {{$sales->appends($_GET)->links()}} --}}
+            {{$sales->appends($_GET)->links()}}
 
             <form action="/report/show/export" method="get">
               <input type="hidden" name="dateStart" value="{{$dateStart}}" >
@@ -85,7 +128,7 @@
 
           @else
             <div class="alert alert-danger" role="alert">
-              There is no Sale Report
+              Không có order nào phù hợp
             </div>
           @endif
         </div>

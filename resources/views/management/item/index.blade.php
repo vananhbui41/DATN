@@ -13,7 +13,7 @@
             {{Session()->get('status')}}
           </div>
         @endif
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr class="table-primary">
               <th scope="col">ID</th>
