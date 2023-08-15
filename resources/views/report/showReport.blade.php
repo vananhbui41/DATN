@@ -2,17 +2,21 @@
 
 @section('content')
   <div class="container">
+    @if($errors->any())
     <div class="row">
       <div class="col-md-12">
-        @if($errors->any())
           <div class="alert alert-danger">
               <ul>
                 @foreach($errors->all() as $error)
                     <li>{{$error}}</li>
                 @endforeach
               </ul>
-          </div>
-        @endif
+          </div>       
+      </div>
+    </div>
+    @endif
+    <div class="row">
+      <div class="col-md-6">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/home">Home</a></li>
@@ -20,6 +24,9 @@
             <li class="breadcrumb-item active" aria-current="page">Result</li>
           </ol>
         </nav>
+      </div>
+      <div class="col-md-6">
+        <a href="/report/charts" class="btn btn-primary">Biểu đồ</a> 
       </div>
     </div>
     <div class="row" id="filter">

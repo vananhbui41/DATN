@@ -10,7 +10,8 @@ use App\Models\User;
 
 use App\Exports\SaleReportExport;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Charts\SaleByTime;
+use App\Charts\Charts;
+use App\Charts\RevenueByTable;
 
 use Carbon\Carbon;
 
@@ -63,14 +64,48 @@ class ReportController extends Controller
         return Excel::download(new SaleReportExport($request->dateStart, $request->dateEnd), 'saleReport.xlsx');
     }
 
-    public function chart() {
+    public function showChart(Request $request)
+    {
+        $current = Carbon::now()->format('Y-m-d');
 
-        $chart = new SaleByTime;
+        $sales = Sale::where('sale_status','paid')->orderBy('created_at');
+        
+        if (isset($request->dateStart) && !isset($request->dateEnd)) {
+            $dateStart = date("Y-m-d H:i:s", strtotime($request->dateStart.' 00:00:00'));
+            $dateEnd = date('Y-m-d H:i:s', strtotime($current.' 23:59:59'));
+            $sales->whereBetween('updated_at', [$dateStart, $dateEnd]);
+        } elseif (!isset($request->dateStart) && isset($request->dateEnd)) {
+            $dateEnd = date("Y-m-d H:i:s", strtotime($request->dateEnd.' 23:59:59'));
+            $sales->where('updated_at', '<=', $dateEnd);
+        } elseif (isset($request->dateStart) && isset($request->dateEnd)) {
+            $dateStart = date("Y-m-d H:i:s", strtotime($request->dateStart.' 00:00:00'));
+            $dateEnd = date("Y-m-d H:i:s", strtotime($request->dateEnd.' 23:59:59'));
+            $sales->whereBetween('updated_at', [$dateStart, $dateEnd]);
+        }
 
-        $chart->labels(['One', 'Two', 'Three', 'Four']);
-        $chart->dataset('My dataset', 'line', [1, 2, 3, 4]);
-        // $chart->dataset('My dataset 2', 'line', [4, 3, 2, 1]);
+        $sales->selectRaw('DATE_FORMAT(created_at, "%m-%Y") as month , SUM(total_price) as revenue')
+        ->groupByRaw('month');
 
-        return view('report.charts.index', ['chart' => $chart]);
-    }
+        $sales = $sales->get()->pluck('revenue', 'month');
+        $chart = new Charts;
+        // $chart->data
+        $chart->labels($sales->keys());
+        $chart->dataset('Doanh Thu (VNĐ)', 'bar', $sales->values())
+        ->backgroundColor('rgba(54, 162, 235, 0.2)');
+        // ->borderColor('rgb(54, 162, 235)')
+        // ->borderWidth(1);
+
+        $saleByTable = Sale::selectRaw('table_name, SUM(total_price) as revenue')
+        ->groupBy('table_name');
+        $saleByTable = $saleByTable->get()->pluck('revenue','table_name');
+        $orderByTableChart = new RevenueByTable;
+        $orderByTableChart->labels($saleByTable->keys());
+        $backgroundColors = array_map('generateRandomColor', $saleByTable->keys()->toArray());
+
+        $orderByTableChart->dataset('Doanh Thu (VNĐ)','pie', $saleByTable->values())->backgroundColor($backgroundColors);
+        return view('report.charts.index', [
+            'chart' => $chart,
+            'orderByTableChart' => $orderByTableChart
+        ]);
+    } 
 }

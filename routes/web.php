@@ -7,6 +7,7 @@ use App\Http\Controllers\Management\TableController;
 use App\Http\Controllers\Cashier\CashierController;
 use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Management\UserController;
+use App\Http\Controllers\Report\SaleController;
 
 
 /*
@@ -60,5 +61,7 @@ Route::middleware(['auth', 'VerifyAdmin'])->group(function () {
 
     Route::resource('management/users', UserController::class);
 
-    Route::get('report/chart', [ReportController::class, 'chart']);
+    Route::get('report/charts', [ReportController::class, 'showChart']);
+
+    Route::resource('report/sales', SaleController::class);
 });

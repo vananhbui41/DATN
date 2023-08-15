@@ -57,3 +57,14 @@ span.input-group-text {
 #show-report {
     margin-bottom: 10px;
 }
+
+.chart-title {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.chart {
+    box-shadow: 0 0 5px #888888;
+    max-height: fit-content;
+}
