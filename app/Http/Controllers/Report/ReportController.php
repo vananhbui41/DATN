@@ -12,6 +12,8 @@ use App\Exports\SaleReportExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Charts\SaleByTime;
 
+use Carbon\Carbon;
+
 class ReportController extends Controller
 {
     //
@@ -29,12 +31,15 @@ class ReportController extends Controller
         $tables = Table::all();
         $users = User::all();
         
-        $request->validate([
-            'dateStart' => 'required',
-            'dateEnd' => 'required'
-        ]);
-        $dateStart = date("Y-m-d H:i:s", strtotime($request->dateStart.' 00:00:00'));
-        $dateEnd = date("Y-m-d H:i:s", strtotime($request->dateEnd.' 23:59:59'));
+        $current = Carbon::now()->format('Y-m-d');
+
+        if (!isset($request->dateStart) && !isset($request->dateEnd)) {
+            $dateStart = date('Y-m-d H:i:s', strtotime($current.' 00:00:00'));
+            $dateEnd = date('Y-m-d H:i:s', strtotime($current.' 23:59:59'));
+        } else {
+            $dateStart = date("Y-m-d H:i:s", strtotime($request->dateStart.' 00:00:00'));
+            $dateEnd = date("Y-m-d H:i:s", strtotime($request->dateEnd.' 23:59:59'));
+        }
         $sales = Sale::whereBetween('updated_at', [$dateStart, $dateEnd])->where('sale_status','paid');
         if (isset($request->table_id)) {
             $table = Table::find($request->table_id);

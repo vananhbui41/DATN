@@ -15,7 +15,8 @@ class CashierController extends Controller
 {
     public function index() {
         $categories = Category::all();
-        return view('cashier.index')->with('categories', $categories);
+        $tables = Table::all();
+        return view('cashier.index')->with('categories', $categories)->with('tables', $tables);
     }
 
     public function getTables() {
@@ -64,10 +65,15 @@ class CashierController extends Controller
         $table_name = $request->table_name;
         $sale = Sale::where('table_id', $table_id)->where('sale_status','unpaid')->first();
 
+
         if(!$sale) {
             $user = Auth::user();
             $sale = new Sale();
             $sale->table_id = $table_id;
+            if (strcmp($table_name, 'Mang Về') == 0) {
+                $sale->mang_ve = 10000;
+                $sale->total_price = $sale->mang_ve;
+            }
             $sale->table_name = $table_name;
             $sale->user_id = $user->id;
             $sale->user_name = $user->name;
@@ -197,7 +203,12 @@ class CashierController extends Controller
         $html .='</tbody></table></div>';
 
         $sale = Sale::find($sale_id);
+
+        $table = Table::find($sale->table_id);
         $html .= '<hr>';
+        if (strcmp($table->name,'Mang Về') == 0) {
+                $html .= '<h4>Phụ Thu Mang Về: 10,000 VNĐ</h4>';
+        }
         $html .= '<h3>Tổng: '.number_format($sale->total_price).' VNĐ</h3>';
 
         if($showBtnPayment){

@@ -2,12 +2,26 @@
 
 @section('content')
 <div class="container">
-    <div class="row" id="table-detail"></div>
+    <div class="row" id="table-detail">
+
+        @foreach ($tables as $table) 
+        <div class="col-md-2 mb-3">
+        @if($table->status == "available")
+        <button class="btn btn-success btn-lg btn-table" style="width: -webkit-fill-available" data-id="{{$table->id}}" data-name="{{$table->name}}"><span>{{$table->name}}</span></button>
+        @else 
+        <button class="btn btn-danger btn-lg btn-table" style="width: -webkit-fill-available" data-id="{{$table->id}}" data-name="{{$table->name}}"><span>{{$table->name}}</span></button>
+        @endif
+        </div>
+        @endforeach
+
+
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <button class="btn btn-primary btn-block" id="btn-show-tables">Danh Sách Bàn</button>
+            {{-- <button class="btn btn-primary btn-block" id="btn-show-tables">Danh Sách Bàn</button> --}}
             <div id="selected-table"></div>
-            <div id="order-detail"></div>
+            <div id="order-detail">
+            </div>
         </div>
         <div class="col-md-7">
             <nav>
@@ -40,6 +54,7 @@
           <h3 class="totalAmount"></h3>
           <h3 class="changeAmount"></h3>
           <h3 class="transferQR"></h3>
+          <h3 class="phuThumb"></h3>
           <div class="input-group mb-3 received">
              <div class="input-group-prepend">
               <span class="input-group-text">VNĐ</span>
@@ -64,21 +79,21 @@
 <script>
     $(document).ready(function() {
         // make table-detail hidden by default
-        $("#table-detail").hide();
+        // $("#table-detail").hide();
 
         //show all tables when a client click on the button
-        $("#btn-show-tables").click(function(){
-            if($("#table-detail").is(":hidden")){
-                $.get("/cashier/getTable", function(data){
-                $("#table-detail").html(data);
-                $("#table-detail").slideDown('fast');
-                $("#btn-show-tables").html('Ẩn Danh Sách Bàn').removeClass('btn-primary').addClass('btn-danger');
-            })
-            }else{
-                $("#table-detail").slideUp('fast');
-                $("#btn-show-tables").html('Danh Sách Bàn').removeClass('btn-danger').addClass('btn-primary');
-            }
-        });
+        // $("#btn-show-tables").click(function(){
+        //     if($("#table-detail").is(":hidden")){
+        //         $.get("/cashier/getTable", function(data){
+        //         $("#table-detail").html(data);
+        //         $("#table-detail").slideDown('fast');
+        //         $("#btn-show-tables").html('Ẩn Danh Sách Bàn').removeClass('btn-primary').addClass('btn-danger');
+        //     })
+        //     }else{
+        //         $("#table-detail").slideUp('fast');
+        //         $("#btn-show-tables").html('Danh Sách Bàn').removeClass('btn-danger').addClass('btn-primary');
+        //     }
+        // });
 
         // Get item by category
         $(".nav-link").click(function(){

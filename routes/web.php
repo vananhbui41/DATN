@@ -53,7 +53,7 @@ Route::middleware(['auth', 'VerifyAdmin'])->group(function () {
     Route::resource('management/tables', TableController::class);
 
 
-    Route::get('report', [ReportController::class, 'index']);
+    Route::get('report', [ReportController::class, 'show']);
     Route::get('report/show', [ReportController::class, 'show']);
 
     Route::get('report/show/export', [ReportController::class, 'export']);

@@ -49,6 +49,13 @@
             <td></td>
             <td>{{number_format($sale->total_price)}} VNĐ</td>
           </tr>
+          @if ($sale->mang_ve > 0) 
+          <tr>
+            <td>Phụ Thu Mang Về</td>
+            <td></td>
+            <td>{{number_format($sale->mang_ve)}} VNĐ</td>
+          </tr>
+          @endif
           <tr>
             <td colspan="2">Phương Thức Thanh Toán: </td>
             <td colspan="2">
